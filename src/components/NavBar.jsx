@@ -20,12 +20,14 @@ const NavBar = () => {
             </li>
           </ul>
           <div className="nav-btns">
-            <button className="home-btn home-btn-white">
-              <Link to={"/WelcomeBack"}>Login</Link>
-            </button>
-            <button className="home-btn home-btn-blue">
-              <Link to={"/UserAdmission"}>Create an Account</Link>
-            </button>
+            <Link to={"/WelcomeBack"}>
+              <button className="home-btn home-btn-white">Login</button>
+            </Link>
+            <Link to={"/UserAdmission"}>
+              <button className="home-btn home-btn-blue">
+                Create an Account
+              </button>
+            </Link>
           </div>
         </div>
       </div>

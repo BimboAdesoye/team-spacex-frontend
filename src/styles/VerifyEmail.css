@@ -1,0 +1,58 @@
+.confirm-email {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f5f9ff;
+  position: relative;
+}
+
+.invoice-pilot-logo {
+  position: absolute;
+  top: 20px;
+  left: 91px;
+  width: 215px;
+  height: 66px;
+}
+
+.confirm-email .confirm-email-body {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 8px 24px 0px #0302051a;
+  padding-block: 32px;
+  padding-inline: 30px;
+  text-align: center;
+  width: 620px;
+}
+
+.confirm-email .confirm-email-body img {
+  margin-inline: auto;
+  width: 291.67px;
+  height: 282.33px;
+}
+
+.confirm-email .confirm-email-body h1 {
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: 0em;
+  line-height: 68px;
+  margin-bottom: 16px;
+  margin-top: 43.88px;
+}
+
+.confirm-email .confirm-email-body p {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0.0015em;
+}
+
+.confirm-email .confirm-email-body p:first-of-type {
+  margin-bottom: 52px;
+}
+
+.confirm-email .confirm-email-body .confirm-email-btn {
+  margin-top: 61px;
+  max-width: 432px;
+  margin-inline: auto;
+}
