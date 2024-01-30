@@ -1,9 +1,9 @@
 import "../styles/RegisterUser.css";
-import bankIcon from "../assets/bank.svg";
+// import bankIcon from "../assets/bank.svg";
 import checkIcon from "../assets/check-contained.svg";
 import eyeClosedIcon from "../assets/eye-closed.svg";
 import lockIcon from "../assets/lock-01.svg";
-import mailIcon from "../assets/mail-01.svg";
+import mailIcon from "../images/mail-01.svg";
 import userProfileIcon from "../assets/user-profile-02.svg";
 import googleIcon from "../assets/Google.svg";
 import lineIcon from "../assets/Vector 2.svg";
@@ -11,8 +11,9 @@ import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import eyeOpenIcon from "../assets/eye-open-svgrepo-com.svg";
 // import { useNavigate } from "react-router";
+import { useSnackbar } from "notistack";
 
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const REGISTER_URL =
@@ -21,6 +22,8 @@ const REGISTER_URL =
 const RegisterUser = () => {
   const [reveal, setReveal] = useState(true);
   const userRef = useRef();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   // const navigate = useNavigate();
 
@@ -113,19 +116,13 @@ const RegisterUser = () => {
       );
       console.log(response.data);
       console.log(response.token);
-      console.log(JSON.stringify(response));
+      console.log("Registration successful");
+      enqueueSnackbar("Registration Successful", { variant: "success" });
       // navigate("/ConfirmEmail");
     } catch (error) {
       console.log(error);
+      enqueueSnackbar("Registration Failed", { variant: "error" });
     }
-    // try {
-    //   const response = await axios.post(REGISTER_URL, formData);
-    //   console.log("Signup successful:", response.data);
-    //   // Handle successful signup (redirect, show success message, etc.)
-    // } catch (error) {
-    //   console.error("Signup failed:", error.response.data);
-    //   // Handle failed signup (show error message, etc.)
-    // }
   };
 
   return (

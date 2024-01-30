@@ -3,24 +3,26 @@ import eyeClosedIcon from "../assets/eye-closed.svg";
 import lockIcon from "../assets/lock-01.svg";
 import googleIcon from "../assets/Google.svg";
 import lineIcon from "../assets/Vector 2.svg";
-import userProfileIcon from "../assets/user-profile-02.svg";
+import mailIcon from "../images/mail-01.svg";
 import { useState, useRef, useEffect } from "react";
 import eyeOpenIcon from "../assets/eye-open-svgrepo-com.svg";
-// import axios from "axios";
+import axios from "axios";
+import { useSnackbar } from "notistack";
 
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-// const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const LOGIN_URL =
-  "https://team-spacex-backend-mbhhb.ondigitalocean.app/api/login/";
+  "https://team-spacex-backend-mbhhb.ondigitalocean.app/auth/login";
 
 const Login = () => {
   const [reveal, setReveal] = useState(true);
   const userRef = useRef();
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const [formData, setFormData] = useState({
-    username: "",
-    // email: "",
+    email: "",
     password: "",
   });
 
@@ -46,19 +48,16 @@ const Login = () => {
 
   const validateForm = () => {
     // const { email, password } = formData;
-    const { username, password } = formData;
+    const { email, password } = formData;
     const errors = {};
     const isPasswordValid = PWD_REGEX.test(password);
-    // const isEmailValid = EMAIL_REGEX.test(email);
+    const isEmailValid = EMAIL_REGEX.test(email);
 
-    if (!username) {
-      errors.username = "Username is required!";
+    if (!email) {
+      errors.email = "Email is required!";
+    } else if (!isEmailValid) {
+      errors.email = "Enter a valid email address";
     }
-    // if (!email) {
-    //   errors.email = "Email is required!";
-    // } else if (!isEmailValid) {
-    //   errors.email = "Enter a valid email address";
-    // }
 
     if (!password) {
       errors.password = "Password is required!";
@@ -79,12 +78,12 @@ const Login = () => {
       setErrMsgs(validationErrors);
     }
     try {
-      // const { username, password } = formData;
+      const { email, password } = formData;
       const response = await axios.post(
         LOGIN_URL,
         JSON.stringify({
-          username: formData.username,
-          password: formData.password,
+          email,
+          password,
         }),
         {
           headers: { "Content-Type": "application/json" },
@@ -93,9 +92,10 @@ const Login = () => {
       );
       console.log(response.data);
       console.log(response.token);
-      console.log(JSON.stringify(response));
+      enqueueSnackbar("Login Successful", { variant: "success" });
     } catch (error) {
       console.log(error);
+      enqueueSnackbar("Login Failed", { variant: "error" });
     }
   };
 
@@ -104,18 +104,6 @@ const Login = () => {
       <form onSubmit={handleLogin}>
         <div className="input-fields">
           <span>
-            <input
-              type="text"
-              placeholder="Username"
-              ref={userRef}
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-            />
-            <img src={userProfileIcon} alt="mail icon" />
-            {errMsgs.username && <p className="error-message">{errMsgs.username}</p>}
-          </span>
-          {/* <span>
             <input
               type="email"
               placeholder="Email"
@@ -126,7 +114,7 @@ const Login = () => {
             />
             <img src={mailIcon} alt="mail icon" />
             {errMsgs.email && <p className="error-message">{errMsgs.email}</p>}
-          </span> */}
+          </span>
           <span>
             <input
               type={reveal ? "password" : "text"}

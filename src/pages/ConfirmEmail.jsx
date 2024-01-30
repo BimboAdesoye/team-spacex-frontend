@@ -5,7 +5,7 @@ import ipsum from "../assets/ipsum.svg";
 import logoIpsum from "../assets/logoipsum.svg";
 import logoIpsumBrand from "../assets/logo-ipsum-brand.svg";
 import logo2 from "../assets/logo2.svg";
-import mailIcon from "../assets/mail-01.svg";
+import mailIcon from "../images/mail-01.svg";
 import invoicePilotLogo from "../assets/InvoicePilot-Logo.svg";
 import { Link } from "react-router-dom";
 
