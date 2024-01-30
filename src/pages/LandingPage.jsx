@@ -9,7 +9,7 @@ import {
   Footer,
   // FeaturesTwo,
 } from "../components";
-import DashboardImage from "../components/DashboardImage";
+// import DashboardImage from "../components/DashboardImage";
 
 const LandingPage = () => {
   return (
@@ -20,7 +20,7 @@ const LandingPage = () => {
 
       <main>
         <Hero />
-        <DashboardImage />
+        {/* <DashboardImage /> */}
         <Companies />
         <FeaturesOne />
         <BizCardList />

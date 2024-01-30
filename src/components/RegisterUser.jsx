@@ -16,7 +16,7 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const REGISTER_URL =
-  "https://team-spacex-backend-mbhhb.ondigitalocean.app/api/signup/";
+  "https://team-spacex-backend-mbhhb.ondigitalocean.app/auth/signup";
 
 const RegisterUser = () => {
   const [reveal, setReveal] = useState(true);
@@ -26,9 +26,10 @@ const RegisterUser = () => {
 
   const [formData, setFormData] = useState({
     username: "",
-    companyName: "",
-    email: "",
     password: "",
+    email: "",
+    first_name: "",
+    last_name: "",
   });
 
   const [errMsgs, setErrMsgs] = useState({});
@@ -53,7 +54,7 @@ const RegisterUser = () => {
   };
 
   const validateForm = () => {
-    const { username, companyName, email, password } = formData;
+    const { username, first_name, last_name, email, password } = formData;
     const errors = {};
     const isPasswordValid = PWD_REGEX.test(password);
     const isEmailValid = EMAIL_REGEX.test(email);
@@ -62,8 +63,12 @@ const RegisterUser = () => {
       errors.username = "Username is required!";
     }
 
-    if (!companyName) {
-      errors.companyName = "Company name is required!";
+    if (!first_name) {
+      errors.first_name = "First name is required!";
+    }
+
+    if (!last_name) {
+      errors.last_name = "Last name is required!";
     }
 
     if (!email) {
@@ -91,14 +96,15 @@ const RegisterUser = () => {
       setErrMsgs(validationErrors);
     }
     try {
-      const { username, password } = formData;
+      const { username, password, email, first_name, last_name } = formData;
       const response = await axios.post(
         REGISTER_URL,
         JSON.stringify({
-          // username: formData.username,
-          // password: formData.password,
           username,
           password,
+          email,
+          first_name,
+          last_name,
         }),
         {
           headers: { "Content-Type": "application/json" },
@@ -112,6 +118,14 @@ const RegisterUser = () => {
     } catch (error) {
       console.log(error);
     }
+    // try {
+    //   const response = await axios.post(REGISTER_URL, formData);
+    //   console.log("Signup successful:", response.data);
+    //   // Handle successful signup (redirect, show success message, etc.)
+    // } catch (error) {
+    //   console.error("Signup failed:", error.response.data);
+    //   // Handle failed signup (show error message, etc.)
+    // }
   };
 
   return (
@@ -120,10 +134,35 @@ const RegisterUser = () => {
         <div className="input-fields">
           <span>
             <input
-              // className={errMsgs.username !== 0 ? "active" : ""}
               type="text"
               ref={userRef}
-              placeholder="Full name"
+              placeholder="First name"
+              name="first_name"
+              value={formData.first_name}
+              onChange={handleChange}
+            />
+            <img src={userProfileIcon} alt="user profile icon" />
+            {errMsgs.first_name && (
+              <p className="error-message">{errMsgs.first_name}</p>
+            )}
+          </span>
+          <span>
+            <input
+              type="text"
+              placeholder="Last name"
+              name="last_name"
+              value={formData.last_name}
+              onChange={handleChange}
+            />
+            <img src={userProfileIcon} alt="user profile icon" />
+            {errMsgs.last_name && (
+              <p className="error-message">{errMsgs.last_name}</p>
+            )}
+          </span>
+          <span>
+            <input
+              type="text"
+              placeholder="Username"
               name="username"
               value={formData.username}
               onChange={handleChange}
@@ -131,19 +170,6 @@ const RegisterUser = () => {
             <img src={userProfileIcon} alt="user-profile icon" />
             {errMsgs.username && (
               <p className="error-message">{errMsgs.username}</p>
-            )}
-          </span>
-          <span>
-            <input
-              type="text"
-              placeholder="Your company name"
-              name="companyName"
-              value={formData.companyName}
-              onChange={handleChange}
-            />
-            <img src={bankIcon} alt="bank icon" />
-            {errMsgs.companyName && (
-              <p className="error-message">{errMsgs.companyName}</p>
             )}
           </span>
           <span>

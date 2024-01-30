@@ -14,7 +14,7 @@
 
 .companies-body .companies-logos {
   display: flex;
-  max-width: 1119px;
+  width: 1119px;
   margin-inline: auto;
   gap: 70px;
 }
