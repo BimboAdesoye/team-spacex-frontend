@@ -1,5 +1,4 @@
 import "../styles/RegisterUser.css";
-// import bankIcon from "../assets/bank.svg";
 import checkIcon from "../assets/check-contained.svg";
 import eyeClosedIcon from "../assets/eye-closed.svg";
 import lockIcon from "../assets/lock-01.svg";

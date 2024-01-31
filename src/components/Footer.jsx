@@ -38,22 +38,15 @@ const Footer = () => {
           </p>
 
           <div className="social-media-logos-container">
-            {/* twitter x */}
             <div>
               <img src={X} alt="x logo" width={24} height={24} />
             </div>
-
-            {/* Linkedin */}
             <div>
               <img src={Linkedin} alt="linked logo" width={24} height={24} />
             </div>
-
-            {/* Facebook */}
             <div>
               <img src={Facebook} alt="facebook logo" width={24} height={24} />
             </div>
-
-            {/* Instagram */}
             <div>
               <img
                 src={Instagram}
@@ -69,7 +62,7 @@ const Footer = () => {
           <h3>COMPANY</h3>
 
           <ul>
-            <li> About Us</li>
+            <li>About Us</li>
             <li>Our Story</li>
             <li>Careers</li>
             <li>Contact</li>
@@ -78,7 +71,6 @@ const Footer = () => {
 
         <div className="footer-third-container footer-list">
           <h3>WHO IT'S FOR</h3>
-
           <ul>
             <li>Freelancers</li>
             <li>Businesses With Employees</li>
