@@ -12,7 +12,9 @@ const DashboardImage = () => {
             width: "1155px",
             position: "absolute",
             top: "688px",
-            left: "178px",
+            // left: "178px",
+            left: "50%",
+            transform: "translateX(-50%)",
           }}
         />
       </div>
