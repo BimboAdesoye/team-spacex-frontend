@@ -119,3 +119,7 @@ a {
 li {
   list-style: none;
 }
+
+.bold {
+  font-weight: 600;
+}

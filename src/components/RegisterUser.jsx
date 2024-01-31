@@ -12,6 +12,7 @@ import axios from "axios";
 import eyeOpenIcon from "../assets/eye-open-svgrepo-com.svg";
 // import { useNavigate } from "react-router";
 import { useSnackbar } from "notistack";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -21,6 +22,7 @@ const REGISTER_URL =
 
 const RegisterUser = () => {
   const [reveal, setReveal] = useState(true);
+  const [loading, setLoading] = useState(false);
   const userRef = useRef();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -97,7 +99,9 @@ const RegisterUser = () => {
       console.log("Form is valid");
     } else {
       setErrMsgs(validationErrors);
+      return;
     }
+    setLoading(true);
     try {
       const { username, password, email, first_name, last_name } = formData;
       const response = await axios.post(
@@ -118,10 +122,12 @@ const RegisterUser = () => {
       console.log(response.token);
       console.log("Registration successful");
       enqueueSnackbar("Registration Successful", { variant: "success" });
+      setLoading(false);
       // navigate("/ConfirmEmail");
     } catch (error) {
       console.log(error);
       enqueueSnackbar("Registration Failed", { variant: "error" });
+      setLoading(false);
     }
   };
 
@@ -220,12 +226,19 @@ const RegisterUser = () => {
           <span className="bold"> Terms of Service</span> and
           <span className="bold"> Privacy Policy</span>
         </p>
-        <button
-          // disabled={errMsgs ? true : false}
-          // disabled
-          className="btn create-account-btn"
-        >
-          Create Account
+        <button className="btn login-btn">
+          {loading ? (
+            <ClipLoader
+              color="white"
+              width="15px"
+              loading={loading}
+              size={30}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          ) : (
+            "Create Account"
+          )}
         </button>
         <div className="line">
           <img src={lineIcon} alt="line-icon" />

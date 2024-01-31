@@ -1,25 +1,35 @@
 import "../styles/WelcomeBack.css";
 import invoicePilotLogo from "../assets/InvoicePilot-Logo.svg";
-import userProfileIcon from "../assets/user-profile-02.svg";
 import lockIcon from "../assets/lock-01.svg";
 import lineIcon from "../assets/Vector 2.svg";
+import mailIcon from "../images/mail-01.svg";
 import { useState, useRef } from "react";
 import eyeOpenIcon from "../assets/eye-open-svgrepo-com.svg";
 import eyeClosedIcon from "../assets/eye-closed.svg";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useSnackbar } from "notistack";
+import ClipLoader from "react-spinners/ClipLoader";
 
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const LOGIN_URL =
+  "https://team-spacex-backend-mbhhb.ondigitalocean.app/auth/login";
 
 const WelcomeBack = () => {
   const [reveal, setReveal] = useState(true);
+  const [loading, setLoading] = useState(false);
   const userRef = useRef();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleReveal = () => {
     setReveal(!reveal);
   };
 
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
@@ -36,13 +46,17 @@ const WelcomeBack = () => {
   };
 
   const validateForm = () => {
-    const { username, password } = formData;
+    const { email, password } = formData;
     const errors = {};
     const isPasswordValid = PWD_REGEX.test(password);
+    const isEmailValid = EMAIL_REGEX.test(email);
 
-    if (!username) {
-      errors.username = "Username is required!";
+    if (!email) {
+      errors.email = "Email is required!";
+    } else if (!isEmailValid) {
+      errors.email = "Enter a valid email address";
     }
+
     if (!password) {
       errors.password = "Password is required!";
     } else if (!isPasswordValid) {
@@ -60,26 +74,31 @@ const WelcomeBack = () => {
       console.log("Form is valid");
     } else {
       setErrMsgs(validationErrors);
+      return;
     }
-    //   try {
-    //     // const { username, password } = formData;
-    //     const response = await axios.post(
-    //       LOGIN_URL,
-    //       JSON.stringify({
-    //         username: formData.username,
-    //         password: formData.password,
-    //       }),
-    //       {
-    //         headers: { "Content-Type": "application/json" },
-    //         withCredentials: true,
-    //       }
-    //     );
-    //     console.log(response.data);
-    //     console.log(response.token);
-    //     console.log(JSON.stringify(response));
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
+    setLoading(true);
+    try {
+      const { email, password } = formData;
+      const response = await axios.post(
+        LOGIN_URL,
+        JSON.stringify({
+          email,
+          password,
+        }),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      console.log(response.data);
+      console.log(response.token);
+      enqueueSnackbar("Login Successful", { variant: "success" });
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      enqueueSnackbar("Login Failed", { variant: "error" });
+      setLoading(false);
+    }
   };
 
   return (
@@ -90,22 +109,25 @@ const WelcomeBack = () => {
       <div className="welcome-back-body">
         <h1 className="">Welcome Back!</h1>
         <p className="sub-heading">
-          Don't have an account? <span className="bold">Sign up</span>
+          Don't have an account?
+          <Link to={"/UserAdmission"} className="bold">
+            Sign up
+          </Link>
         </p>
         <form onSubmit={handleLogin} className="welcome-back-form">
           <div className="input-fields">
             <span>
               <input
-                type="text"
-                placeholder="Username"
+                type="email"
+                placeholder="Email"
                 ref={userRef}
-                name="username"
-                value={formData.username}
+                name="email"
+                value={formData.email}
                 onChange={handleChange}
               />
-              <img src={userProfileIcon} alt="user icon" />
-              {errMsgs.username && (
-                <p className="error-message">{errMsgs.username}</p>
+              <img src={mailIcon} alt="mail icon" />
+              {errMsgs.email && (
+                <p className="error-message">{errMsgs.email}</p>
               )}
             </span>
             <span>
@@ -135,13 +157,28 @@ const WelcomeBack = () => {
             </span>
             <p>Forgot Password?</p>
           </div>
-          <button className="btn login-btn">Login</button>
+          <button className="btn login-btn">
+            {loading ? (
+              <ClipLoader
+                color="white"
+                width="15px"
+                loading={loading}
+                size={30}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
+            ) : (
+              "Log In"
+            )}
+          </button>
           <div className="line">
             <img src={lineIcon} alt="line-icon" />
             <p>Or</p>
             <img src={lineIcon} alt="line-icon" />
           </div>
-          <p className="bold">Sign Up</p>
+          <Link to={"/UserAdmission"} className="bold">
+            Sign Up
+          </Link>
         </form>
       </div>
     </section>

@@ -8,6 +8,7 @@ import { useState, useRef, useEffect } from "react";
 import eyeOpenIcon from "../assets/eye-open-svgrepo-com.svg";
 import axios from "axios";
 import { useSnackbar } from "notistack";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -17,6 +18,7 @@ const LOGIN_URL =
 
 const Login = () => {
   const [reveal, setReveal] = useState(true);
+  const [loading, setLoading] = useState(false);
   const userRef = useRef();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -76,7 +78,9 @@ const Login = () => {
       console.log("Form is valid");
     } else {
       setErrMsgs(validationErrors);
+      return;
     }
+    setLoading(true);
     try {
       const { email, password } = formData;
       const response = await axios.post(
@@ -93,9 +97,11 @@ const Login = () => {
       console.log(response.data);
       console.log(response.token);
       enqueueSnackbar("Login Successful", { variant: "success" });
+      setLoading(false);
     } catch (error) {
       console.log(error);
       enqueueSnackbar("Login Failed", { variant: "error" });
+      setLoading(false);
     }
   };
 
@@ -135,7 +141,20 @@ const Login = () => {
             )}
           </span>
         </div>
-        <button className="btn login-btn">Login</button>
+        <button className="btn login-btn">
+          {loading ? (
+            <ClipLoader
+              color="white"
+              width="15px"
+              loading={loading}
+              size={30}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          ) : (
+            "Log In"
+          )}
+        </button>
         <div className="line">
           <img src={lineIcon} alt="line-icon" />
           <p>Or</p>
