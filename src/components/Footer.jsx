@@ -69,7 +69,7 @@ const Footer = () => {
           <h3>COMPANY</h3>
 
           <ul>
-            <li>About Us</li>
+            <li> About Us</li>
             <li>Our Story</li>
             <li>Careers</li>
             <li>Contact</li>

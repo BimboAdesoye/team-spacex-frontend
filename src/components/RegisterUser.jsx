@@ -10,7 +10,7 @@ import lineIcon from "../assets/Vector 2.svg";
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import eyeOpenIcon from "../assets/eye-open-svgrepo-com.svg";
-// import { useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useSnackbar } from "notistack";
 import ClipLoader from "react-spinners/ClipLoader";
 
@@ -27,7 +27,7 @@ const RegisterUser = () => {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -123,7 +123,7 @@ const RegisterUser = () => {
       console.log("Registration successful");
       enqueueSnackbar("Registration Successful", { variant: "success" });
       setLoading(false);
-      // navigate("/ConfirmEmail");
+      navigate("/WelcomeBack");
     } catch (error) {
       console.log(error);
       enqueueSnackbar("Registration Failed", { variant: "error" });
